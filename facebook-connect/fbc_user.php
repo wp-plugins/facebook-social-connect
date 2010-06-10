@@ -47,17 +47,17 @@ class FbUser {
 	public function fbc_set_user_info($fb_user) {
 		global $wpdb;
 		if(!empty($fb_user)) {
-			$query   = $wpdb->prepare("Select ID from wp_users inner join wp_usermeta ON wp_users.ID = wp_usermeta.user_id AND wp_usermeta.meta_key = 'wp_facebook_id' AND wp_usermeta.meta_value = '%s'", $fb_user->id);
+			$query   = $wpdb->prepare("Select ID, user_login from wp_users inner join wp_usermeta ON wp_users.ID = wp_usermeta.user_id AND wp_usermeta.meta_key = 'wp_facebook_id' AND wp_usermeta.meta_value = '%s'", $fb_user->id);
 			$wp_user = $wpdb->get_results( $query );
-			if(!empty($wp_user)) {
+			if(empty($wp_user)) {
 					$this->fbc_create_wp_user($fb_user);
 			} else {
-				update_usermeta($user->ID, 'wp_facebook_id' , $fb_user->id );
-				update_usermeta($user->ID, 'wp_facebook_link' , $fb_user->link );
+				update_usermeta($wp_user[0]->ID, 'wp_facebook_id' , $fb_user->id );
+				update_usermeta($wp_user[0]->ID, 'wp_facebook_link' , $fb_user->link );
 				$userObj = wp_signon(
 						array(
-							'user_login' => $wp_user->user_login,
-							'user_password' => $wp_user->user_login,
+							'user_login' => $wp_user[0]->user_login,
+							'user_password' => $wp_user[0]->user_login,
 						)
 					);
 			}
@@ -121,9 +121,10 @@ class FbUser {
 					throw new Exception('Could not create user.');
 
 				$userObj->set_role('subscriber');
+				wp_new_user_notification($user_id, $user_pass);
 			}
 		}
-		
+
 		return TRUE;
 	}
 
@@ -222,6 +223,7 @@ class FbUser {
 
 		extract($userdata, EXTR_SKIP);
 
+		echo $user_pass;
 		// Are we updating or creating?
 		if ( !empty($ID) ) {
 			$ID = (int) $ID;
@@ -232,7 +234,8 @@ class FbUser {
 			// Hash the password
 			$user_pass = wp_hash_password($user_pass);
 		}
-
+		echo $user_pass;
+		//exit;
 		$user_login = sanitize_user($user_login, true);
 		$user_login = apply_filters('pre_user_login', $user_login);
 

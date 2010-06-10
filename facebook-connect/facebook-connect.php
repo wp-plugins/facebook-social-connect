@@ -202,6 +202,7 @@ function fbc_set_user_information() {
 		endif;
 	else :
 		wp_logout();
+		wp_redirect(get_bloginfo('url'));
 	endif;
 }
 
