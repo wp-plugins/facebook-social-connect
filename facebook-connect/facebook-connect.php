@@ -1,11 +1,11 @@
 <?php
 /*
- Plugin Name: Facebook Connect Plugin
+ Plugin Name: Facebook Social Connect Plugin
  Plugin URI: http://arcgate.com/facebook-connect
  Description: Allows the use of Facebook Connect for account registration, authentication, and commenting.
  Author: Anuj Chauhan<anuj@arcgate.com>
  Author URI: http://arcgate.com/
- Version: 1.0
+ Version: 1.0.1
  License: GPL (http://www.fsf.org/licensing/licenses/info/GPLv2.html)
  */
 
@@ -186,7 +186,7 @@ function fbc_get_user_cookie() {
 
 
 /**
- * pick all info of user from facebook and then create a wp auth user
+ * Pick all info of user from facebook and then create a wp auth user
  *
  * @method FbUser::fbc_get_loggedin_user()
  * @global $fbcuser object FbUser class object
@@ -200,6 +200,8 @@ function fbc_set_user_information() {
 		if($user) :
 			$fbcuser->fbc_set_user_info($user);
 		endif;
+	else :
+		wp_logout();
 	endif;
 }
 

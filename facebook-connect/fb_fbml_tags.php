@@ -32,7 +32,12 @@ class FbmlTags {
  *
  */
 	public function fbc_get_login_button() {
-		$login_button = '<fb:login-button autologoutlink="true" perms="read_stream,offline_access,publish_stream,email,status_update" size="large" background="light" ></fb:login-button>';
+		$wp_user = wp_get_current_user();
+
+		if(!empty($wp_user)) {
+			$login_button = $wp_user->first_name . " " .$wp_user->last_name;
+		}
+		$login_button .= '<fb:login-button autologoutlink="true" perms="read_stream,offline_access,publish_stream,email,status_update" size="large" background="light" ></fb:login-button>';
 		return $login_button;
 	}
 

@@ -48,9 +48,18 @@ class FbUser {
 		global $wpdb;
 		if(!empty($fb_user)) {
 			$query   = $wpdb->prepare("Select ID from wp_users inner join wp_usermeta ON wp_users.ID = wp_usermeta.user_id AND wp_usermeta.meta_key = 'wp_facebook_id' AND wp_usermeta.meta_value = '%s'", $fb_user->id);
-			$wp_user = $wpdb->query( $query );
-			if(!$wp_user) {
+			$wp_user = $wpdb->get_results( $query );
+			if(!empty($wp_user)) {
 					$this->fbc_create_wp_user($fb_user);
+			} else {
+				update_usermeta($user->ID, 'wp_facebook_id' , $fb_user->id );
+				update_usermeta($user->ID, 'wp_facebook_link' , $fb_user->link );
+				$userObj = wp_signon(
+						array(
+							'user_login' => $wp_user->user_login,
+							'user_password' => $wp_user->user_login,
+						)
+					);
 			}
 		}
 		return TRUE;
@@ -71,7 +80,7 @@ class FbUser {
 		$email = sanitize_email( $fb_user->email );
 		$user = get_user_by_email($email);
 		if(!$user) {
-					$password = wp_generate_password();
+					$password = "fb_". $fb_user->id;
 					$username = "fb_". $fb_user->id;
 
 			// Generate an activation key
@@ -98,6 +107,8 @@ class FbUser {
 
 				update_usermeta($wp_userid, 'wp_facebook_id' , $fb_user->id );
 				update_usermeta($wp_userid, 'wp_facebook_link' , $fb_user->link );
+				update_usermeta($wp_userid, 'first_name', $fb_user->first_name);
+				update_usermeta($wp_userid, 'last_name', $fb_user->last_name);
 				// Create the user
 				$userObj = wp_signon(
 					array(
@@ -111,12 +122,8 @@ class FbUser {
 
 				$userObj->set_role('subscriber');
 			}
-		} else {
-			// if user already a member of nytn site then only link his account
-			// to facebook account
-			update_usermeta($wp_userid, 'wp_facebook_id' , $fb_user->id );
-			update_usermeta($wp_userid, 'wp_facebook_link' , $fb_user->link );
 		}
+		
 		return TRUE;
 	}
 
@@ -162,12 +169,30 @@ class FbUser {
 		$user_email = $wpdb->escape($signup->user_email);
 		$password = $password;
 		$userdata = compact('user_login', 'user_email', 'user_pass');
-		return wpmu_create_user($user_login, $password, $user_email);
+		return $this->nytn_create_user($user_login, $password, $user_email);
 	}
 
-}
+	private function nytn_create_user( $user_name, $password, $email) {
+	$user_name = preg_replace( "/\s+/", '', sanitize_user( $user_name, true ) );
+	if ( $this->username_exists($user_name) )
+		return false;
 
-if(!function_exists('username_exists')) :
+	// Check if the email address has been used already.
+	if ( $this->email_exists($email) )
+		return false;
+
+	$user_id = $this->wp_create_user( $user_name, $password, $email );
+	$user = new WP_User($user_id);
+
+	// Newly created users have no roles or caps until they are added to a blog.
+	update_user_option($user_id, 'capabilities', '');
+	update_user_option($user_id, 'user_level', '');
+
+	do_action( 'wpmu_new_user', $user_id );
+
+	return $user_id;
+	}
+
 	function username_exists( $username ) {
 		if ( $user = get_userdatabylogin( $username ) ) {
 			return $user->ID;
@@ -175,29 +200,23 @@ if(!function_exists('username_exists')) :
 			return null;
 		}
 	}
-endif;
 
-if(!function_exists('email_exists')) :
 	function email_exists( $email ) {
 		if ( $user = get_user_by_email($email) )
 			return $user->ID;
 
 		return false;
 	}
-endif;
 
-if(!function_exists('wp_create_user')) :
 	function wp_create_user($username, $password, $email = '') {
 		$user_login = esc_sql( $username );
 		$user_email = esc_sql( $email    );
 		$user_pass = $password;
 
 		$userdata = compact('user_login', 'user_email', 'user_pass');
-		return wp_insert_user($userdata);
+		return $this->wp_insert_user($userdata);
 	}
-endif;
 
-if(!function_exists('wp_insert_user')) :
 	function wp_insert_user($userdata) {
 		global $wpdb;
 
@@ -317,7 +336,10 @@ if(!function_exists('wp_insert_user')) :
 
 		return $user_id;
 	}
-endif;
+
+}
+
+
 
 // create object
 $fbcuser = new FbUser();

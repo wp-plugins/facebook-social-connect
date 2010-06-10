@@ -2,8 +2,8 @@
 Contributors: Anuj Chauhan
 Tags: Facebook, Facebook login, facebook share, facebook like, facebook recommendation, facebook activity, facebook live stream, facebook social plugin, facebook comments
 Requires at least: 2.9
-Tested up to: 2.3
-Stable tag: 1.0
+Tested up to: 2.9
+Stable tag: 1.0.1
 
 Facebook Connect funciotnality.
 
@@ -21,14 +21,16 @@ Features:
 
 
 == Installation ==
-1) Upload plugin in wp plugins directory.
-2) Activate plugin from plugins menu.
-3) "Arcgate FBC" menu appears in navigation bar.
-4) Activate required functionality you want to use in your site.
+1. Upload plugin in wp plugins directory.
+2. Activate plugin from plugins menu.
+3. "Arcgate FBC" menu appears in navigation bar.
+4. Activate required functionality you want to use in your site.
 
 
 == Frequently Asked Questions ==
-If you have any additional comments or any query mail me : anujchauhan76@gmail.com
+* There are still some bugs. please provide me feedback on : anujchauhan76@gmail.com
+
+* If you have any additional comments or any query mail me : anujchauhan76@gmail.com
 
 == Screenshots ==
 
@@ -37,6 +39,12 @@ If you have any additional comments or any query mail me : anujchauhan76@gmail.c
 == Changelog ==
 
 = 1.0 =
+Some Admin functionality bugs
+
+=1.0.1=
+Remove bugs .
+User can login and logout with site and facebook both.
+
 
 == Upgrade Notice ==
 
