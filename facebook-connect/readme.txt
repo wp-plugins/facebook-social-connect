@@ -1,56 +1,36 @@
-=== Plugin Name ===
+========== Plugin Name ==========
+
 Contributors: Anuj Chauhan
-Tags: Facebook, Facebook login, facebook share, facebook like, facebook recommendation, facebook activity, facebook live stream, facebook social plugin, facebook comments
-Requires at least: 2.9
-Tested up to: 2.9
+Tags: Facebook, Facebook Login, Facebook Share, Facebook Like, Facebook Recommendation, Facebook Activity, Facebook Live stream, Facebook Social Plugin, Facebook Comments.
+Requires at least: 2.9.0
+Tested up to: 2.9.0
 Stable tag: 1.0.1
 
-Facebook Connect funciotnality.
+Facebook Connect functionality.
 
-== Description ==
+========== Description ==========
 
-This Plugin is for facebook Social connect features.
+This plugin is for facebook social connect features.
 
 Features:
 
-* Facebook, Facebook login, facebook share, facebook like, facebook recommendation, facebook activity, facebook live stream, facebook social plugin, facebook comments
-* Register User with facebook crediantials. No need to signup with own site this plugin uses users facebook crediantails to register with site.
-* Facebook login button auto render on wp login place.
-* Facebook like and share button auto render in blog posts.
-* Facebook Recommendation, Activity, live stream block are controlled by widgets.
+* Facebook, Facebook Login, Facebook Share, Facebook Like, Facebook Recommendation, Facebook Activity, Facebook Live stream, Facebook Social Plugin, Facebook Comments.
+* Register a user with facebook credentials. No need for signup module on your site. This plugin uses user's facebook credentials to register at your site.
+* Facebook login button auto renders on wp-login place.
+* Facebook like and share button auto renders in blog posts.
+* Facebook Recommendation, Activity, Live Stream Block are controlled by widgets.
 
+========== Installation ==========
 
-== Installation ==
-1. Upload plugin in wp plugins directory.
+1. Upload plugin in wp-plugins directory.
 2. Activate plugin from plugins menu.
 3. "Arcgate FBC" menu appears in navigation bar.
-4. Activate required functionality you want to use in your site.
+4. Activate the required functionality that you want to use in your site.
 
+========== Frequently Asked Questions ==========
 
-== Frequently Asked Questions ==
-* There are still some bugs. please provide me feedback on : anujchauhan76@gmail.com
+========== Screenshots ==========
 
-* If you have any additional comments or any query mail me : anujchauhan76@gmail.com
+========== Changelog ==========
 
-== Screenshots ==
-
-
-
-== Changelog ==
-
-= 1.0 =
-Some Admin functionality bugs
-
-=1.0.1=
-Remove bugs .
-User can login and logout with site and facebook both.
-
-
-== Upgrade Notice ==
-
-
-== Arbitrary section ==
-
-== A brief Markdown Example ==
-
-
+========== Upgrade Notice ==========
